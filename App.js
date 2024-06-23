@@ -1,13 +1,12 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import TodoList from './components/TodoList';
-import AboutScreen from './screens/AboutScreen'; 
+import AboutScreen from './screens/AboutScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 
 const HomeScreen = () => (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

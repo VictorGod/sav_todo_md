@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, ScrollView, StyleSheet, Platform, DatePickerIOS } from 'react-native';
+import { View, Text, TextInput, Button, ScrollView, StyleSheet, Platform } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import CardComponent from './CardComponent';
 
 const TodoList = () => {
@@ -55,40 +56,9 @@ const TodoList = () => {
     setTodos(updatedTodos);
   };
 
-  const handleDateChangeIOS = (date) => {
-    setNewTodoDate(date);
-  };
-
-  const handleDateChangeAndroid = () => {
-  };
-
-  const handleDateChange = () => {
-    if (Platform.OS === 'ios') {
-      return (
-        <DatePickerIOS
-          date={newTodoDate}
-          onDateChange={handleDateChangeIOS}
-          mode="date"
-        />
-      );
-    } else if (Platform.OS === 'android') {
-      return (
-        <TextInput
-          style={styles.input}
-          placeholder="Выберите дату"
-          value={newTodoDate.toISOString().split('T')[0]}
-          onChangeText={(text) => setNewTodoDate(new Date(text))}
-        />
-      );
-    } else {
-      return (
-        <input
-          type="date"
-          value={newTodoDate.toISOString().split('T')[0]}
-          onChange={(e) => setNewTodoDate(new Date(e.target.value))}
-        />
-      );
-    }
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || newTodoDate;
+    setNewTodoDate(currentDate);
   };
 
   return (
@@ -100,7 +70,21 @@ const TodoList = () => {
         value={newTodo}
         onChangeText={(text) => setNewTodo(text)}
       />
-      {handleDateChange()}
+      {Platform.OS === 'ios' ? (
+        <DateTimePicker
+          value={newTodoDate}
+          mode="date"
+          display="default"
+          onChange={handleDateChange}
+        />
+      ) : (
+        <TextInput
+          style={styles.input}
+          placeholder="Выберите дату"
+          value={newTodoDate.toISOString().split('T')[0]}
+          onChangeText={(text) => setNewTodoDate(new Date(text))}
+        />
+      )}
       <Button title="Добавить задачу" onPress={addTodo} />
       {loading ? (
         <Text>Загрузка...</Text>
